@@ -1,0 +1,26 @@
+# ---------- 构建产物 ----------
+bin/
+obj/
+
+# obj/project.assets.json 是本机手工生成的（这台机器 dotnet restore 跑不起来），
+# 里面写死了 C:\Users\<user>\.nuget 和本仓库的绝对路径，所以整个 obj/ 都不入库。
+# 忽略只是不进版本库，磁盘上的文件不会被删，本地 --no-restore 构建照常可用。
+# 新环境（restore 可用）直接 dotnet build 即可，不需要这份文件。
+
+# ---------- 编辑器 / IDE ----------
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---------- 系统垃圾 ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# ---------- 打包产物 ----------
+*.zip
