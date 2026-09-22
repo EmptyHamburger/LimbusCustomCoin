@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Limbus Company</GameDir>
+    <GameDir Condition="'$(GameDir)' == ''">D:\LimbusModding</GameDir>
     <BepInExCore>$(GameDir)\BepInEx\core</BepInExCore>
     <BepInExInterop>$(GameDir)\BepInEx\interop</BepInExInterop>
   </PropertyGroup>
@@ -51,6 +51,13 @@
       <HintPath>$(BepInExInterop)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(GameDir)\BepInEx\plugins\Lethe.dll">
+			<HintPath>%(Identity)</HintPath>
+			<Private>false</Private>
+		</Reference>
   </ItemGroup>
 
   <!-- 硬币美术：整包内嵌进 DLL，部署时只需要一个 StrikeCoin.dll。

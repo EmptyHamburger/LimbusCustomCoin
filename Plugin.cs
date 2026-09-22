@@ -6,6 +6,7 @@ using HarmonyLib;
 namespace StrikeCoin
 {
     [BepInPlugin("com.limbusmods.strikecoin", "StrikeCoin", "1.2.1")]
+    [BepInDependency("Lethe")]
     public class StrikeCoinPlugin : BasePlugin
     {
         internal static ManualLogSource LogInstance;
@@ -20,6 +21,8 @@ namespace StrikeCoin
 
             // 先扫官方枚举、给每种自定义色分配值（顺带做官方新增硬币的兼容性自检），再装 hook。
             Patches.Init();
+
+            CustomCoinColorRegister.BuildLookUpTable();
 
             var harmony = new Harmony("com.limbusmods.strikecoin");
             Patches.Apply(harmony);

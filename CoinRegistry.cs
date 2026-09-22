@@ -230,5 +230,31 @@ namespace StrikeCoin
             var log = StrikeCoinPlugin.LogInstance;
             if (log != null) log.Log(level, "[StrikeCoin] " + message);
         }
+
+
+
+        public static void RegisterCustomCoinColor(string coinColor, int? coinId = null)
+        {
+            coinColor = coinColor.ToUpper();
+            if (string.IsNullOrEmpty(coinColor) || ById.ContainsKey(coinColor)) return;
+
+            int val = coinId.HasValue ? coinId.Value : CoinColorAllocator.Allocate();
+
+            if (coinId.HasValue) CoinColorAllocator.Reserve(val);
+
+            var def = new CoinDef
+            {
+                Id = coinColor,
+                Value = val,
+                Effect = CoinEffect.None,
+                Tint = TintOf(coinColor)
+            };
+
+            All.Add(def);
+            ById[coinColor] = def;
+            ByValue[val] = def;
+
+            StrikeCoinPlugin.LogInstance?.LogInfo($"Registered color from file: {coinColor} with id = {val}");
+        }
     }
 }

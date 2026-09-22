@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Lethe;
 
 namespace StrikeCoin
 {
@@ -93,6 +94,15 @@ namespace StrikeCoin
             if (Cache.TryGetValue(cacheKey, out cached) && cached != null) return cached;
 
             CaptureVanillaMetrics((COIN_UI_STATE)key);
+
+            // Check mod sprite files (<modPath>/custom_coin_sprites/*.png)
+            var modTex = LoadSpriteFromMod(def, key);
+            if (modTex != null)
+            {
+                modTex.name = def.Id + "_" + key;
+                ReportLoaded(def, key, $"Mod sprite PNG {def.ArtPrefix}_{key}.png", modTex);
+                return Wrap(cacheKey, modTex, def.Id + "_");
+            }
 
             var tex = LoadEmbedded(def, key);
             if (tex != null)
@@ -315,6 +325,59 @@ namespace StrikeCoin
             return new Color32((byte)(c.r + (255 - c.r) * t),
                                (byte)(c.g + (255 - c.g) * t),
                                (byte)(c.b + (255 - c.b) * t), c.a);
+        }
+
+
+
+        private static readonly Dictionary<string, string> modSprites = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        public static void ScanModSprites()
+        {
+            modSprites.Clear();
+
+            try
+            {
+                foreach (string modPath in Directory.GetDirectories(LetheMain.modsPath.FullPath))
+                {
+                    string modName = Path.GetFileName(modPath);
+                    if (modName.StartsWith("FULLDISABLED_")) continue;
+
+                    var path = Path.Combine(modPath, "custom_coin_sprites");
+                    if (!Directory.Exists(path)) continue;
+                    
+                    foreach(string filePath in Directory.GetFiles(path, "*.png", SearchOption.AllDirectories))
+                    {
+                        string fileName = Path.GetFileName(filePath);
+                        modSprites[fileName] = filePath;
+                    }
+
+                    StrikeCoinPlugin.LogInstance.LogInfo($"Indexed {modSprites.Count} sprite files from mod folders");
+                }
+            }
+            catch (Exception ex)
+            {StrikeCoinPlugin.LogInstance.LogError($"Failed scanning sprite files from mod folders: {ex}");}
+        }
+
+        private static Texture2D LoadSpriteFromMod(CoinDef def, int state)
+        {
+            string file = $"{def.ArtPrefix}_{state}.png";
+            if (!modSprites.TryGetValue(file, out string filePath))
+            {
+                file = $"{def.ArtPrefix}.png";
+                if (!modSprites.TryGetValue(file, out filePath)) return null;
+            }
+
+            try
+            {
+                byte[] bytes = File.ReadAllBytes(filePath);
+                Texture2D tex2d = PngDecoder.Load(bytes);
+                return tex2d;
+            }
+            catch (Exception ex)
+            {
+                StrikeCoinPlugin.LogInstance.LogError($"Failed to decode mod sprite with path '{filePath}': {ex}");
+                return null;
+            }
         }
     }
 }

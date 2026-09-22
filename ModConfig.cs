@@ -42,14 +42,14 @@ namespace StrikeCoin
                 + "原版 Enum.Parse 会直接抛异常，技能一加载就炸。开启后改成按 GOLD 处理并打 Error 日志。\n"
                 + "关掉 = 还原版行为（抛异常）。");
 
-            ActiveEffectIds = config.Bind("Effect", "ActiveEffectIds", "ORANGE",
+            ActiveEffectIds = config.Bind("Effect", "ActiveEffectIds", "",
                 "哪些自定义色真正执行「拼点首次胜利 -> 摧毁对手全部硬币」。逗号分隔。\n"
                 + "没列进来的颜色仍然会注册、会出图，但拼点胜利时只打一条占位日志，不做任何事。");
 
             DestroyAllCoins = config.Bind("Effect", "DestroyAllCoins", true,
                 "触发时摧毁对手所有存活硬币。关掉只写日志，方便验证触发时机。");
 
-            SelfRemoveCoinIds = config.Bind("Effect", "SelfRemoveCoinIds", "CYAN",
+            SelfRemoveCoinIds = config.Bind("Effect", "SelfRemoveCoinIds", "",
                 "哪些自定义色执行「本技能每拼点一次（不论输赢，平局也算）-> 删掉自己第一枚该色硬币」。逗号分隔。\n"
                 + "和 ActiveEffectIds 重叠时以 ActiveEffectIds（摧毁）为准。");
 
