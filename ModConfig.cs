@@ -27,7 +27,7 @@ namespace StrikeCoin
 
         internal static void Init(ConfigFile config)
         {
-            CoinColorIds = config.Bind("General", "CoinColorIds", "ORANGE,BLACK,BLUE,CYAN,WHITE",
+            CoinColorIds = config.Bind("General", "CoinColorIds", "",
                 "注册的自定义硬币颜色，逗号分隔，大小写不敏感。\n"
                 + "静态数据里 coin 的 color 字段写成其中任意一个，就会被识别为该自定义色。\n"
                 + "顺序决定枚举值的分配顺序；美术资源名也用它（内嵌 <色名>_<状态>.png）。");
