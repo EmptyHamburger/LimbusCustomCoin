@@ -2,11 +2,13 @@ using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using ModularSkillScripts;
 
 namespace StrikeCoin
 {
     [BepInPlugin("com.limbusmods.strikecoin", "StrikeCoin", "1.2.1")]
     [BepInDependency("Lethe")]
+    [BepInDependency("GlitchGames.ModularSkillScripts")]
     public class StrikeCoinPlugin : BasePlugin
     {
         internal static ManualLogSource LogInstance;
@@ -32,6 +34,8 @@ namespace StrikeCoin
                 + " ActiveEffectIds=" + ModConfig.ActiveEffectIds.Value
                 + " TriggerMode=" + ModConfig.TriggerMode.Value
                 + " FallbackUnknownColor=" + ModConfig.FallbackUnknownColor.Value);
+
+            ModularSkillScripts.MainClass.acquirerDict["getcoincolorid"] = new AcquirerGetCoinColorId();
         }
     }
 }

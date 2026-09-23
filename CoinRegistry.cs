@@ -78,7 +78,7 @@ namespace StrikeCoin
                 { "WHITE",  new Color32(0xF0, 0xF0, 0xF0, 0xFF) },
             };
 
-        private const string DefaultId = "ORANGE";
+        // private const string DefaultId = "ORANGE";
 
         /// <summary>按配置建表并分配枚举值。必须在 CoinColorAllocator.Scan() 之后调用。</summary>
         internal static void Build()
@@ -88,11 +88,11 @@ namespace StrikeCoin
             ByValue.Clear();
 
             var ids = ParseList(ModConfig.CoinColorIds.Value);
-            if (ids.Count == 0)
-            {
-                Log(LogLevel.Warning, "CoinColorIds 是空的，回退到只注册 " + DefaultId + "。");
-                ids.Add(DefaultId);
-            }
+            // if (ids.Count == 0)
+            // {
+            //     Log(LogLevel.Warning, "CoinColorIds 是空的，回退到只注册 " + DefaultId + "。");
+            //     ids.Add(DefaultId);
+            // }
 
             // 两套效果各自一份名单：赢家才触发的 DestroyAllCoins，和不看胜负的 RemoveSelfFirstCoin。
             // 两种都列了的 id 以 DestroyAllCoins 为准（先赢后自删，两条分支互不冲突，

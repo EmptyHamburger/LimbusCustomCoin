@@ -58,6 +58,10 @@
 			<HintPath>%(Identity)</HintPath>
 			<Private>false</Private>
 		</Reference>
+    <Reference Include="$(GameDir)\BepInEx\plugins\ModularSkillScripts.dll">
+			<HintPath>%(Identity)</HintPath>
+			<Private>false</Private>
+		</Reference>
   </ItemGroup>
 
   <!-- 硬币美术：整包内嵌进 DLL，部署时只需要一个 StrikeCoin.dll。
